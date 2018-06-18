@@ -18,20 +18,18 @@ class App extends Component {
    }
 
    updateTopScore = ()=>{
-     
-    this.setState(prevState =>{
+      this.setState(prevState =>{
       if (prevState.topScore < prevState.score){
       return { ...prevState, topScore: prevState.topScore +1}
       }
     })
-  
    }
 
    resetScore = ()=>{
     this.setState(prevState =>{
       const images = prevState.images.map(image=>{
         image.isClicked = false;
-        return images
+        return image
       })
       return { ...prevState, score:0, images:images}
     })
