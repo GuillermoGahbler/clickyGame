@@ -1,18 +1,88 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import images from './image.json';
+import Image from './image.js';
 import './App.css';
 
 class App extends Component {
+
+  state ={
+    score:0,
+    topScore: 0,
+    images: images
+   }
+
+   updateScore = ()=>{
+    this.setState(prevState =>{
+      return { ...prevState, score: prevState.score +1}
+    })
+   }
+
+   updateTopScore = ()=>{
+     
+    this.setState(prevState =>{
+      if (prevState.topScore < prevState.score){
+      return { ...prevState, topScore: prevState.topScore +1}
+      }
+    })
+  
+   }
+
+   resetScore = ()=>{
+    this.setState(prevState =>{
+      const images = prevState.images.map(image=>{
+        image.isClicked = false;
+        return images
+      })
+      return { ...prevState, score:0, images:images}
+    })
+   }
+
+   
+   addClick = (element)=>{
+     console.log(element)
+    this.setState( prevState =>{
+     prevState.images.map(image=>{
+       if (image.src === element.src) image.isClicked = true;
+       return image;
+     })
+    })
+
+  }
+
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+      <div>
+        <header>
+           <div> Click game </div>
+           <div> Score: {this.state.score} | Top Score:{this.state.topScore} </div>
+           
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+      right below the header
+      </div>
+      <main>
+        <div className='clear col-8 cc'>
+          {
+            images.map((image)=>{
+              return (
+                <Image 
+                key={image.id} 
+                src={image.src}
+                updateScore={this.updateScore}
+                updateTopScore={this.updateTopScore}
+                resetScore={this.resetScore}
+                isClicked={image.isClicked}
+                addClick={this.addClick}
+                />);
+            })
+          }
+        </div>
+      </main>
+      <footer>
+       footer section.
+        </footer>  
+
       </div>
     );
   }
