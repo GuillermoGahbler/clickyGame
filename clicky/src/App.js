@@ -51,36 +51,34 @@ class App extends Component {
   render() {
     return (
       <div>
-        <header>
-           <div> Click game </div>
-           <div> Score: {this.state.score} | Top Score:{this.state.topScore} </div>
-           
-        </header>
-      <div>
-      right below the header
-      </div>
-      <main>
-        <div className='clear col-8 cc'>
-          {
-            images.map((image)=>{
-              return (
-                <Image 
-                key={image.id} 
-                src={image.src}
-                updateScore={this.updateScore}
-                updateTopScore={this.updateTopScore}
-                resetScore={this.resetScore}
-                isClicked={image.isClicked}
-                addClick={this.addClick}
-                />);
-            })
-          }
-        </div>
-      </main>
-      <footer>
-       footer section.
+          <header>
+            <div className='clicky'> Clicky Game </div>
+            <div className='scores'> Score: {this.state.score} | Top Score:{this.state.topScore} </div>
+          </header>
+          <div className='directions'>
+                The clicky game click images only once if you click more than once you lose.
+          </div>
+          <main>
+            <div className='clear col-8 cc'>
+              {
+                images.map((image)=>{
+                  return (
+                  <Image 
+                    key={image.id} 
+                    src={image.src}
+                    updateScore={this.updateScore}
+                    updateTopScore={this.updateTopScore}
+                    resetScore={this.resetScore}
+                    isClicked={image.isClicked}
+                    addClick={this.addClick}
+                  />);
+                })
+              }
+            </div>
+          </main>
+        <footer>
+          footer section.
         </footer>  
-
       </div>
     );
   }
