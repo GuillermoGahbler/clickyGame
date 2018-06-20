@@ -9,10 +9,13 @@ class Image extends React.Component {
       this.props.updateScore();
       this.props.updateTopScore();
       this.props.addClick(this.props);
+      
     }
       else {
         this.props.resetScore();
-      }  
+        
+      } 
+      this.props.shuffle(); 
      }
   
       

@@ -11,6 +11,22 @@ class App extends Component {
     images: images
    }
 
+   
+
+   getRandomPosition = (arr)=>Math.floor(Math.random()*arr.length)
+   
+   shuffleImages = () => {
+    let images = [...this.state.images];
+
+    const newImages = this.state.images.map(()=>{
+     const position = this.getRandomPosition(images);
+      const image = images[position];
+      images.splice(position,1)
+      return image 
+  })
+    }
+
+
    updateScore = ()=>{
     this.setState(prevState =>{
       return { ...prevState, score: prevState.score +1}
@@ -71,6 +87,7 @@ class App extends Component {
                     resetScore={this.resetScore}
                     isClicked={image.isClicked}
                     addClick={this.addClick}
+                    shuffle={this.shuffleImages}
                   />);
                 })
               }
