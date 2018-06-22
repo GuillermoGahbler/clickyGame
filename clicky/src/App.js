@@ -12,20 +12,17 @@ class App extends Component {
    }
 
    
-
+/*
    getRandomPosition = (arr)=>Math.floor(Math.random()*arr.length)
    
    shuffleImages = () => {
-    let images = [...this.state.images];
+       this.state.images.map((image)=>{
+         const thisImage = image;
+         this.getRandomPosition(this.state.images);
 
-    const newImages = this.state.images.map(()=>{
-     const position = this.getRandomPosition(images);
-      const image = images[position];
-      images.splice(position,1)
-      return image 
-  })
+       })
     }
-
+*/
 
    updateScore = ()=>{
     this.setState(prevState =>{
@@ -68,11 +65,11 @@ class App extends Component {
     return (
       <div>
           <header>
-            <div className='clicky'> Clicky Game </div>
-            <div className='scores'> Score: {this.state.score} | Top Score:{this.state.topScore} </div>
+            <div className='clicky'> <h1>Clicky Game</h1> </div>
+            <div className='scores'> <h2> Score: {this.state.score} | Top Score:{this.state.topScore} </h2></div>
           </header>
           <div className='directions'>
-                The clicky game click images only once if you click more than once you lose.
+               <h3>The clicky game click images only once if you click more than once you lose.</h3>
           </div>
           <main>
             <div className='clear col-8 cc'>
