@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import images from './image.json';
 import Image from './image.js';
 import './App.css';
-
+ 
 class App extends Component {
 
   state ={
@@ -11,19 +11,38 @@ class App extends Component {
     images: images
    }
 
-   
-/*
-   getRandomPosition = (arr)=>Math.floor(Math.random()*arr.length)
-   
-   shuffleImages = () => {
-       this.state.images.map((image)=>{
-         const thisImage = image;
-         this.getRandomPosition(this.state.images);
+   componentWillMount(){
+     this.updateImages(this.shuffle);
+   }
 
-       })
+   updateImages =(cb,element) => {
+     return new Promise(resolve =>{
+       resolve (this.setState((prevState)=>{
+         return {...prevState, images:cb(element)}
+       }))
+     })
     }
-*/
 
+    handleSuccessfulClick = (element) => {
+      this.updateImages(this.addClick,element)
+      .then(()=>this.updateImages(this.shuffle))
+      .then(()=>this.updateScore())
+      .then(()=>this.updateTopScore())
+    }
+
+
+   handleUnsuccessfulClick = () => {
+     this.updateImages(this.shuffle)
+     .then(()=>this.resetScore())
+   }
+
+
+   handleClick = (element) =>{
+       if (!element.isClicked) this.handleSuccessfulClick(element)
+       else this.handleUnsuccessfulClick()
+   }
+
+ 
    updateScore = ()=>{
     this.setState(prevState =>{
       return { ...prevState, score: prevState.score +1}
@@ -49,16 +68,22 @@ class App extends Component {
    }
 
    
-   addClick = (element)=>{
-     console.log(element)
-    this.setState( prevState =>{
-     prevState.images.map(image=>{
-       if (image.src === element.src) image.isClicked = true;
-       return image;
-     })
-    })
-
+   addClick =(element)=>{
+      return this.state.images.map(image=>{
+        const {handleClick,...newImage} = element
+        return element.src === image.src ? {...newImage, isClicked:true} : image
+      })
   }
+
+shuffle = () =>{
+  const images = [...this.state.images]
+  return this.state.images.map(()=>{
+    const position = Math.floor(Math.random()* images.length)
+    const randomImage = images[position];
+    images.splice(position,1);
+    return randomImage;
+  })
+}
 
 
   render() {
@@ -74,17 +99,16 @@ class App extends Component {
           <main>
             <div className='clear col-8 cc'>
               {
-                images.map((image)=>{
+                this.state.images.map((image)=>{
                   return (
                   <Image 
                     key={image.id} 
                     src={image.src}
-                    updateScore={this.updateScore}
-                    updateTopScore={this.updateTopScore}
-                    resetScore={this.resetScore}
+                    handleClick={this.handleClick} 
                     isClicked={image.isClicked}
-                    addClick={this.addClick}
-                    shuffle={this.shuffleImages}
+                    id={image.id}
+
+                     
                   />);
                 })
               }
